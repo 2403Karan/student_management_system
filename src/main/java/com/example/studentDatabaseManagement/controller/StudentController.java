@@ -17,9 +17,10 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/students")
-    public ResponseEntity<List<StudentDto>> getAllStudent(){
-//        return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudents());
-         return ResponseEntity.ok(studentService.getStudents());
+    public List<StudentDto> getStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return studentService.getStudents(page, size);
     }
 
     @GetMapping("/students/{id}")

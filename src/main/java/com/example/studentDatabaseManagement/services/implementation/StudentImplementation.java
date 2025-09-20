@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor //automatically creates constructor
@@ -17,12 +20,12 @@ public class StudentImplementation implements StudentService {
     private final StudentRepository studentRepository;
     private final ModelMapper modelMapper;
 
-    @Override
-    public List<StudentDto> getStudents() {
-        List<Student> students = studentRepository.findAll();
-        return students.
-                stream().
-                map(student -> modelMapper.map(student,StudentDto.class))
+    public List<StudentDto> getStudents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size); // page is 0-based
+        Page<Student> studentPage = studentRepository.findAll(pageable);
+        return studentPage.getContent()
+                .stream()
+                .map(student -> modelMapper.map(student, StudentDto.class))
                 .toList();
     }
 

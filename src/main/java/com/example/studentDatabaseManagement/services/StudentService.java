@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface StudentService
 {
-    List<StudentDto> getStudents();
+    List<StudentDto> getStudents(int page,int size);
 
     StudentDto getStudentById(long id);
 
